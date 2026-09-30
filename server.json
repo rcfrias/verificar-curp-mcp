@@ -1,0 +1,28 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.rcfrias/verificar-curp",
+  "title": "Verificar CURP",
+  "description": "Valida, coteja y verifica CURPs mexicanas en el registro de RENAPO.",
+  "websiteUrl": "https://verificarcurp.com",
+  "repository": {
+    "url": "https://github.com/rcfrias/verificar-curp-mcp",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "verificar-curp-mcp",
+      "version": "1.0.0",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "name": "VERIFICAR_CURP_API_KEY",
+          "description": "Tu API key de verificarcurp.com (panel → API Keys)",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

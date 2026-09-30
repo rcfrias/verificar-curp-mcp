@@ -1,0 +1,53 @@
+{
+  "name": "verificar-curp-mcp",
+  "version": "1.0.0",
+  "description": "Servidor MCP oficial de Verificar CURP: valida, coteja y verifica CURPs en RENAPO desde Claude, Cursor y otros clientes MCP.",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "CURP",
+    "RENAPO",
+    "validar CURP",
+    "verificar CURP",
+    "Mexico",
+    "KYC"
+  ],
+  "homepage": "https://verificarcurp.com/docs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rcfrias/verificar-curp-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rcfrias/verificar-curp-mcp/issues"
+  },
+  "license": "MIT",
+  "author": "Verificar CURP (https://verificarcurp.com)",
+  "mcpName": "io.github.rcfrias/verificar-curp",
+  "type": "module",
+  "bin": {
+    "verificar-curp-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && node --test",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "verificar-curp": "^1.0.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.3",
+    "typescript": "^7.0.2"
+  }
+}
