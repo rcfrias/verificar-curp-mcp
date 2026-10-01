@@ -1,6 +1,6 @@
 {
   "name": "verificar-curp-mcp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Servidor MCP oficial de Verificar CURP: valida, coteja y verifica CURPs en RENAPO desde Claude, Cursor y otros clientes MCP.",
   "keywords": [
     "mcp",
@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.31.0",
-    "verificar-curp": "^1.0.0",
+    "verificar-curp": "^1.1.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {

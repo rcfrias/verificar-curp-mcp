@@ -117,4 +117,45 @@ export function registerTools(server: McpServer, client: VerificarCurpClient): v
     },
     () => run(async () => ({ tokens: await client.getBalance() }))
   )
+
+  server.registerTool(
+    'crear_enlace_captura',
+    {
+      title: 'Crear enlace de captura',
+      description:
+        'Crea un enlace de un solo uso para que un cliente escriba su CURP desde su celular (por ejemplo, en el ' +
+        'check-in). Si mandas `persona` (los datos de la reservación), la CURP se coteja contra ellos sin ' +
+        'mostrárselos al cliente; con `ask_guest_persona` el cliente también escribe su nombre y fecha de ' +
+        'nacimiento. El resultado NO llega a esta conversación: se entrega al destino `destination_id` ' +
+        '(webhook, correo o chat configurado en el panel de verificarcurp.com → Destinos), solo si la CURP ' +
+        'es válida y coincide. Crear el enlace es gratis; cada respuesta del cliente consume 1 token (hasta ' +
+        '3 intentos). Máximo 20 enlaces vivos a la vez. Devuelve `url` (compártela solo con el cliente) y ' +
+        '`expiresAt`.',
+      inputSchema: {
+        destination_id: z.string().min(1).max(64).describe('ID del destino (panel → Destinos)'),
+        persona: personaSchema
+          .optional()
+          .describe('Datos de la reservación para cotejar la CURP que escriba el cliente'),
+        ask_guest_persona: z
+          .boolean()
+          .optional()
+          .describe('Pedir también nombre, primer apellido y fecha de nacimiento al cliente'),
+        reference: z
+          .string()
+          .max(80)
+          .optional()
+          .describe('Tu referencia (reserva, folio); viaja con la entrega. Nunca pongas la CURP aquí.'),
+      },
+      annotations: { readOnlyHint: false, idempotentHint: false, openWorldHint: true },
+    },
+    ({ destination_id, persona, ask_guest_persona, reference }) =>
+      run(() =>
+        client.createCaptureLink({
+          destinationId: destination_id,
+          ...(persona !== undefined ? { persona } : {}),
+          ...(ask_guest_persona ? { askGuestPersona: true } : {}),
+          ...(reference !== undefined ? { reference } : {}),
+        })
+      )
+  )
 }

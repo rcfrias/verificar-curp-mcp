@@ -12,6 +12,7 @@ RENAPO.
 | `verificar_curp_renapo` | Además la verifica en RENAPO; el resultado llega a tu destino (webhook, correo o chat) | 1 token |
 | `consultar_verificacion` | Estado de una verificación por `job_id` | Gratis |
 | `consultar_saldo` | Tokens disponibles | Gratis |
+| `crear_enlace_captura` | Enlace de un solo uso para que tu cliente escriba su CURP desde su celular; el resultado llega a tu destino | Gratis; 1 token por respuesta del cliente |
 
 Necesitas una API key: créala en [verificarcurp.com](https://verificarcurp.com) (panel → API Keys).
 

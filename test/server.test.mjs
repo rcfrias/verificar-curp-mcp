@@ -12,6 +12,21 @@ const api = createServer((req, res) => {
   req.on('end', () => {
     requests.push({ method: req.method, url: req.url, key: req.headers['x-api-key'], body: body && JSON.parse(body) })
     res.setHeader('Content-Type', 'application/json')
+    if (req.url === '/api/v1/capture-links') {
+      res.statusCode = 201
+      return res.end(
+        JSON.stringify({
+          success: true,
+          id: 'clx_1',
+          url: 'https://verificarcurp.com/c/tok',
+          reference: 'r1',
+          documentType: null,
+          requireBack: false,
+          askGuestPersona: true,
+          expiresAt: '2026-10-01T18:00:00.000Z',
+        })
+      )
+    }
     if (req.url === '/api/v1/balance') return res.end(JSON.stringify({ success: true, balance: 7 }))
     if (req.url === '/api/v1/curp/verificacion/nope') {
       res.statusCode = 404
@@ -43,11 +58,12 @@ after(async () => {
 
 const parse = (r) => JSON.parse(r.content[0].text)
 
-test('lists the four tools', async () => {
+test('lists the five tools', async () => {
   const { tools } = await client.listTools()
   assert.deepEqual(tools.map((t) => t.name).sort(), [
     'consultar_saldo',
     'consultar_verificacion',
+    'crear_enlace_captura',
     'validar_curp',
     'verificar_curp_renapo',
   ])
@@ -75,6 +91,27 @@ test('verificar_curp_renapo maps snake_case args to the API fields', async () =>
     verificar: true,
     destinationId: 'dst_1',
     idempotencyKey: 'k1',
+  })
+})
+
+test('crear_enlace_captura maps snake_case args and returns the link', async () => {
+  const r = await client.callTool({
+    name: 'crear_enlace_captura',
+    arguments: { destination_id: 'dst_1', reference: 'r1', ask_guest_persona: true, persona: { nombres: 'Julio' } },
+  })
+  assert.equal(r.isError, undefined)
+  assert.deepEqual(requests.at(-1).body, {
+    destinationId: 'dst_1',
+    persona: { nombres: 'Julio' },
+    askGuestPersona: true,
+    reference: 'r1',
+  })
+  assert.deepEqual(parse(r), {
+    id: 'clx_1',
+    url: 'https://verificarcurp.com/c/tok',
+    reference: 'r1',
+    askGuestPersona: true,
+    expiresAt: '2026-10-01T18:00:00.000Z',
   })
 })
 

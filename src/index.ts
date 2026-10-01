@@ -10,7 +10,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { VerificarCurpClient } from 'verificar-curp'
 import { registerTools } from './tools.js'
 
-const VERSION = '1.0.0'
+const VERSION = '1.1.0'
 
 const apiKey = process.env.VERIFICAR_CURP_API_KEY
 if (!apiKey) {
